@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="commonJs">
+    <script th:inline="javascript" type="text/javascript">
+        /*<![CDATA[*/
+        var ctx = /*[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]]*/;
+        /*]]>*/
+        var ctxA = ctx + [[${session.ctxA}]];
+        var ctxU = ctx + [[${session.ctxU}]];
+    </script>
+    <script type="text/javascript" th:src="@{/ignore/js/jquery/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/bootstrap-3.3.7/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/js/jquery/jquery.metis.menu.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/js/jquery/jquery.pagination.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/js/wizard/jquery.steps.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/js/custom.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/js/sys/main.js}"></script>
+    <script type="text/javascript" th:src="@{/ignore/js/ajax.setting.js}"></script>
+</div>
+</body>
+</html>

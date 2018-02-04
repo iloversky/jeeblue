@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Form Config Index Page</title>
+
+    <style th:replace="commonCss :: commonCss"></style>
+    <link rel="stylesheet" th:href="@{/ignore/css/layout/layoutit.css}" />
+    <link rel="stylesheet" th:href="@{/ignore/jquery-ui-1.12.1/jquery-ui.min.css}" />
+
+</head>
+
+<body class="edit">
+<div class="navbar navbar-inverse navbar-fixed-top navbar-layoutit">
+    <a class="navbar-brand" href="/">JeeBlue</a>
+    <!--<div class="collapse navbar-collapse">
+        <ul class="nav" id="menu-layoutit">
+            <li>
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <button type="button" id="edit" class="active btn btn-xs btn-primary"> <i class="glyphicon glyphicon-edit "></i>
+                        编辑
+                    </button>
+                    <button type="button" class="btn btn-xs btn-primary" id="devpreview">
+                        <i class="glyphicon-eye-close glyphicon"></i>
+                        开发
+                    </button>
+                    <button type="button" class="btn btn-xs btn-primary" id="sourcepreview">
+                        <i class="glyphicon-eye-open glyphicon"></i>
+                        预览
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-xs btn-primary" id="button-download-modal" data-target="#downloadModal" role="button" data-toggle="modal"> <i class="glyphicon-chevron-down glyphicon"></i>
+                        下载
+                    </button>
+                    <button class="btn btn-xs btn-primary" href="#clear" id="clear" >
+                        <i class="glyphicon-trash glyphicon"></i>
+                        清空
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>-->
+</div>
+
+
+<div class="container">
+    <div class="">
+        <div class="sidebar-nav">
+            <ul class="nav nav-list accordion-group">
+                <li class="nav-header">
+                    <div class="pull-right popover-info">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <div class="popover fade right">
+                            <div class="arrow"></div>
+                            <h3 class="popover-title">帮助</h3>
+                            <div class="popover-content">
+                                在这里设置你的栅格布局, 栅格总数默认为12, 用空格分割每列的栅格值
+                            </div>
+                        </div>
+                    </div>
+                    <i class="glyphicon-plus glyphicon"></i>
+                    布局设置
+                </li>
+                <li class="rows" id="estRows">
+                    <div class="lyrow">
+                        <span class="drag label label-default">
+                            <i class="glyphicon glyphicon-move"></i>
+                            拖动
+                        </span>
+                        <div class="preview">
+                            <input type="text" value="12" class="form-control layout-columns">
+                        </div>
+                        <div class="view">
+                            <div class="component clearfix layout-container">
+                                <div class="col-md-12 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="lyrow">
+                        <span class="drag label label-default">
+                            <i class="glyphicon glyphicon-move"></i>
+                            拖动
+                        </span>
+                        <div class="preview">
+                            Form
+                        </div>
+                        <div class="view">
+                            <div class="component clearfix layout-container">
+                                <form role="form" class="column"></form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lyrow">
+                        <span class="drag label label-default">
+                            <i class="glyphicon glyphicon-move"></i>
+                            拖动
+                        </span>
+                        <div class="preview">
+                            Form Input
+                        </div>
+                        <form class="view" role="form">
+                            <div class="component clearfix form-group">
+                                <label for="input">Label</label>
+                                <input type="text" id="input" class="form-control">
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="demo ui-sortable">
+            <div id="container" style="min-height: 360px;"></div>
+        </div>
+
+    </div>
+</div>
+
+
+<script th:replace="commonJs :: commonJs"></script>
+<script type="text/javascript" th:src="@{/ignore/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/ignore/js/sys/jquery.bootstrap.drag.js}"></script>
+<script type="text/javascript">
+    $(function() {
+        $(".layout-columns").keydown(function() {
+            $(this).parent().parent().find(".drag").hide();
+        }).keyup(function() {
+            var val = $(this).val();
+            if(val) {
+                var vals = val.split(" ");
+                var cols = 0;
+                var column = [];
+                for(var i = 0; i < vals.length; i++) {
+                    cols += parseInt(vals[i]);
+                    column[i] = "<div class='col-md-" + vals[i] + " column'></div>";
+                }
+                if(cols == 12) {
+                    $(this).parent().parent().find(".drag").show();
+                    $(this).parent().parent().find(".component").empty();
+                    for(var i = 0; i < column.length; i++) {
+                        $(this).parent().parent().find(".component").append(column[i]);
+                    }
+                }
+            }
+        });
+
+        var count = 1;
+        $("#container").sortable({
+        });
+        $(".drag").draggable({
+            opacity: 0.7,
+            helper: function() {
+                var $helper = $(this).parent().find(".view").clone().css({width: "200px"});
+                return $helper;
+            },
+            revert: "invalid"
+        });
+        $("#container").droppable({
+            greedy: true,
+            accept: ":not(.column-not-sort)",
+            activeClass: "ui-state-hover",
+            hoverClass: "ui-state-active",
+            drop: function(event, ui) {
+                appendComponent(this, $(ui.helper[0].outerHTML).html());
+                return false;
+            }
+        });
+    });
+
+    function appendComponent(parent, component) {
+        var $comp = $(component);
+        $comp.addClass("column-not-sort");
+        /*$comp.append("<a href='#close' class='remove label label-danger'>"
+            + "<i class='glyphicon glyphicon-remove'></i>删除</a>");*/
+        $(parent).append($comp);
+
+        // 注册 mouseover事件，编辑组件元素属性
+        registerEvent($comp, "mouseover", function() {
+        });
+        registerEvent($comp, "mouseout", function() {
+        });
+
+        if(($comp.attr("class")) && ($comp.attr("class").indexOf("layout-container") != -1)) {
+            $comp.find(".column").droppable({
+                greedy: true,
+                accept: ":not(.column-not-sort)",
+                drop: function(event, ui) {
+                    appendComponent(this, $(ui.helper[0].outerHTML).html());
+                    return false;
+                }
+            }).sortable({
+                revert: true
+            });
+        }
+    }
+    
+    function registerEvent(source, event, func) {
+        $(source).bind(event, function() {
+            func();
+            return false;
+        });
+    }
+</script>
+</body>
+</html>

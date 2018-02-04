@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="application.properties" />
+    <classPathEntry
+            location="C:\Personal\repos\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`" />
+        <!-- 生成的文件编码 -->
+        <property name="javaFileEncoding" value="utf-8"/>
+
+        <!-- 该插件给实体类添加toString()方法  -->
+        <!--<plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+        <!-- 这个插件给由MBG生成的Java模型对象增加了equals和hashCode方法 -->
+        <!--<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+        <!-- 通过自定义插件类生成自定义注解和接口 -->
+        <!--<plugin type="com.lovin.jeeblue.common.generator.GenPlugin">
+            <property name="mappers" value="com.lovin.jeeblue.common.mapper.BaseMapper" />
+        </plugin>-->
+
+        <commentGenerator>
+            <!-- 取消生成注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!-- 数据库连接属性 -->
+        <jdbcConnection driverClass="${spring.datasource.driverClassName}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}" />
+        <!-- 生成实体类配置 -->
+        <javaModelGenerator targetPackage="com.lovin.jeeblue.module.sys.entity"
+                            targetProject="src/main/java">
+            <property name="rootClass" value="com.lovin.jeeblue.common.entity.BaseEntity"/>
+        </javaModelGenerator>
+        <!-- 生成映射文件配置 -->
+        <!--<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" />-->
+        <!-- 生成映射接口配置 type: XMLMAPPER/ANNOTATEDMAPPER-->
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.lovin.jeeblue.module.sys.mapper"
+                             targetProject="src/main/java">
+            <property name="rootInterface" value="com.lovin.jeeblue.common.mapper.BaseMapper"/>
+        </javaClientGenerator>
+
+        <table tableName="%" domainObjectName="">
+            <!-- mysql 配置 -->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+    </context>
+</generatorConfiguration>

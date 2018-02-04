@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 配置生成器 -->
+<generatorConfiguration>
+
+    <classPathEntry
+            location="C:\Personal\repos\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
+
+    <context id="context" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/jeeblue?characterEncoding=UTF-8"
+                        userId="jeeblue" password="jeeblue" />
+        <javaModelGenerator targetPackage="com.lovin.jeeblue.entity"
+                            targetProject="src/main/java" />
+
+        <!-- 生成 mapper.xml文件目录 -->
+        <!--<sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources" />-->
+
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.lovin.jeeblue.mapper"
+                             targetProject="src/main/java">
+        </javaClientGenerator>
+
+        <table tableName="T_SYS_USER" domainObjectName="SysUser"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false" >
+            <!-- 默认以驼峰形式生成属性 -->
+            <!--property name="useActualColumnNames" value="false"/>-->
+        </table>
+    </context>
+</generatorConfiguration>
